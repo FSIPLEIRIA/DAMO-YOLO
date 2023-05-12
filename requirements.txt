@@ -9,3 +9,4 @@ Pillow
 thop
 tabulate
 easydict
+pycocotools

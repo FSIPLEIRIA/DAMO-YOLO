@@ -29,6 +29,8 @@ scripts/
 *.mat
 !targets*.mat
 
+.idea/
+
 # LOG
 *.out
 workdirs
