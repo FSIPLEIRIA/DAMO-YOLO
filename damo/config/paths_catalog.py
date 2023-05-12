@@ -19,6 +19,14 @@ class DatasetCatalog(object):
             'img_dir': 'coco/test2017',
             'ann_file': 'coco/annotations/image_info_test-dev2017.json'
         },
+        'fsoco_train_coco': {
+            'img_dir': 'fsoco/train/images',
+            'ann_file': 'fsoco/train/annotations/fsoco.json'
+        },
+        'fsoco_val_coco': {
+            'img_dir': 'fsoco/val/images',
+            'ann_file': 'fsoco/val/annotations/fsoco.json'
+        }
         }
 
     @staticmethod

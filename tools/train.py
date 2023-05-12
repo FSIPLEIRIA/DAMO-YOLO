@@ -2,9 +2,13 @@
 # Copyright (C) Alibaba Group Holding Limited. All rights reserved.
 import argparse
 import copy
+import os.path
+import sys
 
 import torch
 from loguru import logger
+
+sys.path.append(os.path.abspath(""))
 
 from damo.apis import Trainer
 from damo.config.base import parse_config
@@ -28,7 +32,7 @@ def make_parser():
         type=str,
         help='plz input your config file',
     )
-    parser.add_argument('--local_rank', type=int, default=0)
+    parser.add_argument('--local-rank', type=int, default=0)
     parser.add_argument('--tea_config', type=str, default=None)
     parser.add_argument('--tea_ckpt', type=str, default=None)
     parser.add_argument(
