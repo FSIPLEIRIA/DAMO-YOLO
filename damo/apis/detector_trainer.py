@@ -12,6 +12,7 @@ import torch
 import torch.nn as nn
 from loguru import logger
 from torch.nn.parallel import DistributedDataParallel as DDP
+from torch.utils.tensorboard import SummaryWriter
 
 from damo.apis.detector_inference import inference
 from damo.base_models.losses.distill_loss import FeatureLoss
@@ -94,6 +95,9 @@ class Trainer:
         self.output_dir = cfg.miscs.output_dir
         self.exp_name = cfg.miscs.exp_name
         self.device = 'cuda'
+
+        # init tensorboard
+        self.tb = SummaryWriter()
 
         # set_seed(cfg.miscs.seed)
         # metric record
@@ -356,6 +360,10 @@ class Trainer:
                     for k, v in loss_meter.items()
                 ])
 
+                # represent the losses on tensorboard
+                for k, v in loss_meter.items():
+                    self.tb.add_scalar(k, v.avg, (self.epoch * self.iters_per_epoch) + cur_iter)
+
                 time_meter = self.meter.get_filtered_meter('time')
                 time_str = ', '.join([
                     '{}: {:.3f}s'.format(k, v.avg)
@@ -384,6 +392,9 @@ class Trainer:
 
             if (cur_iter + 1) % self.iters_per_epoch == 0:
                 self.epoch = self.epoch + 1
+
+        # close tensorboard
+        self.tb.close()
 
         self.save_ckpt(ckpt_name='latest', local_rank=local_rank)
 
