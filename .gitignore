@@ -31,6 +31,8 @@ scripts/
 
 .idea/
 
+runs/
+
 # LOG
 *.out
 workdirs
