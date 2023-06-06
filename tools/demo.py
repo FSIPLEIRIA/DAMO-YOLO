@@ -2,12 +2,15 @@
 
 import argparse
 import os
+import sys
 
 import cv2
 import numpy as np
 import torch
 from loguru import logger
 from PIL import Image
+
+sys.path.append(os.path.abspath(""))
 
 from damo.base_models.core.ops import RepConv
 from damo.config.base import parse_config
