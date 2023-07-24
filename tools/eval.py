@@ -3,9 +3,12 @@
 
 import argparse
 import os
+import sys
 
 import torch
 from loguru import logger
+
+sys.path.append(os.path.abspath(""))
 
 from damo.base_models.core.ops import RepConv
 from damo.apis.detector_inference import inference
@@ -139,17 +142,18 @@ def main():
                                   is_train=False,
                                   size_div=32)
 
-    for output_folder, dataset_name, data_loader_val in zip(
-            output_folders, config.dataset.val_ann, val_loader):
-        inference(
-            model,
-            data_loader_val,
-            dataset_name,
-            iou_types=('bbox', ),
-            box_only=False,
-            device=device,
-            output_folder=output_folder,
-        )
+    with torch.no_grad():
+        for output_folder, dataset_name, data_loader_val in zip(
+                output_folders, config.dataset.val_ann, val_loader):
+            inference(
+                model,
+                data_loader_val,
+                dataset_name,
+                iou_types=('bbox', ),
+                box_only=False,
+                device=device,
+                output_folder=output_folder,
+            )
 
 
 if __name__ == '__main__':
