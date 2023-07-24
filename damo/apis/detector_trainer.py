@@ -384,16 +384,19 @@ class Trainer:
                 self.save_ckpt('epoch_%d' % (self.epoch + 1),
                                local_rank=local_rank)
 
+            """
             if (cur_iter + 1) % self.eval_interval_iters == 0:
                 time.sleep(0.003)
                 self.evaluate(local_rank, self.cfg.dataset.val_ann)
                 self.model.train()
+            """
             synchronize()
 
             if (cur_iter + 1) % self.iters_per_epoch == 0:
                 self.epoch = self.epoch + 1
 
         # close tensorboard
+        self.tb.flush()
         self.tb.close()
 
         self.save_ckpt(ckpt_name='latest', local_rank=local_rank)
