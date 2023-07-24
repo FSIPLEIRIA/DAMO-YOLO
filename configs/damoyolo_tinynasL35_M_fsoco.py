@@ -11,16 +11,17 @@ class Config(MyConfig):
 
         self.miscs.exp_name = os.path.split(
             os.path.realpath(__file__))[1].split('.')[0]
-        self.miscs.eval_interval_epochs = 10
-        self.miscs.ckpt_interval_epochs = 5
+        self.miscs.eval_interval_epochs = 3
+        self.miscs.ckpt_interval_epochs = 2
         # optimizer
-        self.train.batch_size = 256
+        self.train.batch_size = 6
         self.train.base_lr_per_img = 0.01 / 64
         self.train.min_lr_ratio = 0.05
         self.train.weight_decay = 5e-4
         self.train.momentum = 0.9
-        self.train.no_aug_epochs = 16
-        self.train.warmup_epochs = 5
+        self.train.no_aug_epochs = 2
+        self.train.warmup_epochs = 1
+        self.train.total_epochs = 15
 
         # augment
         self.train.augment.transform.image_max_range = (640, 640)
