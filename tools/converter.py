@@ -2,11 +2,14 @@
 # Copyright (C) Alibaba Group Holding Limited. All rights reserved.
 import argparse
 import sys
+import os
 
 import onnx
 import torch
 from loguru import logger
 from torch import nn
+
+sys.path.append(os.path.abspath(""))
 
 from damo.base_models.core.end2end import End2End
 from damo.base_models.core.ops import RepConv, SiLU
