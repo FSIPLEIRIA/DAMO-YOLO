@@ -19,7 +19,7 @@ from damo.base_models.losses.distill_loss import FeatureLoss
 from damo.dataset import build_dataloader, build_dataset
 from damo.detectors.detector import build_ddp_model, build_local_model
 from damo.utils import (MeterBuffer, get_model_info, get_rank, gpu_mem_usage,
-                        save_checkpoint, setup_logger, synchronize)
+                        save_checkpoint, setup_logger, synchronize, save_torchscript)
 
 from torch.nn import GroupNorm, LayerNorm
 from torch.nn.modules.batchnorm import _BatchNorm
@@ -418,11 +418,17 @@ class Trainer:
                 'feature_loss':
                 self.feature_loss.state_dict() if self.distill else None,
             }
+            # save only the weights
             save_checkpoint(
                 ckpt_state,
                 update_best_ckpt,
                 self.file_name,
                 ckpt_name,
+            )
+            # save the whole model for torchscript
+            save_torchscript(
+                save_model,
+                self.file_name, ckpt_name
             )
 
     def resume_model(self, resume_path, load_optimizer=False):
