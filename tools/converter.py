@@ -237,6 +237,13 @@ def main():
 
     dummy_input = torch.randn(args.batch_size, 3, args.img_size,
                               args.img_size).to(device)
+    
+    # export torchscript
+    """
+    model_ts = torch.jit.trace(model, dummy_input)
+    model_ts.save(onnx_name.replace('.onnx', '.pth'))
+    """
+
     _ = model(dummy_input)
     torch.onnx._export(
         model,
