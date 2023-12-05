@@ -12,9 +12,9 @@ class Config(MyConfig):
         self.miscs.exp_name = os.path.split(
             os.path.realpath(__file__))[1].split('.')[0]
         self.miscs.eval_interval_epochs = 100
-        self.miscs.ckpt_interval_epochs = 2
+        self.miscs.ckpt_interval_epochs = 1
         # optimizer
-        self.train.batch_size = 16
+        self.train.batch_size = 4
         self.train.base_lr_per_img = 0.001 / 64
         self.train.min_lr_ratio = 0.05
         self.train.no_aug_epochs = 2
