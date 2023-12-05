@@ -418,6 +418,7 @@ class Trainer:
                 'feature_loss':
                 self.feature_loss.state_dict() if self.distill else None,
             }
+            # save only the weights
             save_checkpoint(
                 ckpt_state,
                 update_best_ckpt,
