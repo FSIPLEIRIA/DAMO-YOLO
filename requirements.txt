@@ -10,3 +10,4 @@ thop
 tabulate
 easydict
 pycocotools
+tensorboard
