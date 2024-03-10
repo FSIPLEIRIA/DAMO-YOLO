@@ -202,7 +202,7 @@ def main():
         config.test.batch_size = args.batch_size
 
     # build model
-    model = build_local_model(config, 'cuda')
+    model = build_local_model(config, device)
     # load model paramerters
     ckpt = torch.load(args.ckpt, map_location='cpu')
 
@@ -236,11 +236,13 @@ def main():
                         with_preprocess=args.with_preprocess)
 
     dummy_input = torch.randn(args.batch_size, 3, args.img_size,
-                              args.img_size).to('cuda')
+                              args.img_size).to(device)
     
     # export torchscript
+    """
     model_ts = torch.jit.trace(model, dummy_input)
     model_ts.save(onnx_name.replace('.onnx', '.pth'))
+    """
 
     _ = model(dummy_input)
     torch.onnx._export(
