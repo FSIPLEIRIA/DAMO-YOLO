@@ -7,7 +7,6 @@ from copy import deepcopy
 
 import torch
 import torch.nn as nn
-from thop import profile
 
 __all__ = [
     'fuse_conv_and_bn',
@@ -41,6 +40,7 @@ def get_latency(model, inp, iters=500, warmup=2):
 
 
 def get_model_info(model, tsize):
+    """
     stride = 640
     model = model.eval()
     backbone = model.backbone
@@ -76,6 +76,8 @@ def get_model_info(model, tsize):
     info += f'total latency(ms): {total_latency*1000:.3f}, ' + \
             f'total flops(G): {total_flops:.2f}, ' + f'total params(M): {total_params:.2f}\n'
     return info
+    """
+    return 'Not implemented'
 
 
 def fuse_conv_and_bn(conv, bn):
