@@ -9,6 +9,7 @@ import numpy as np
 import torch
 from loguru import logger
 from PIL import Image
+import copy as copy
 
 sys.path.append(os.path.abspath(""))
 
@@ -321,7 +322,10 @@ def main():
     if input_type == 'image':
         origin_img = np.asarray(Image.open(args.path).convert('RGB'))
         bboxes, scores, cls_inds = infer_engine.forward(origin_img)
-        vis_res = infer_engine.visualize(origin_img, bboxes, scores, cls_inds, conf=args.conf, save_name=os.path.basename(args.path), save_result=args.save_result)
+        #deep copy of the image:
+        img = copy.deepcopy(origin_img)
+
+        vis_res = infer_engine.visualize(img, bboxes, scores, cls_inds, conf=args.conf, save_name=os.path.basename(args.path), save_result=args.save_result)
         if not args.save_result:
             cv2.namedWindow("DAMO-YOLO", cv2.WINDOW_NORMAL)
             cv2.imshow("DAMO-YOLO", vis_res)
