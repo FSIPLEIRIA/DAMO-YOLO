@@ -49,7 +49,7 @@ def main():
 
     #transopose the image
     img_resized_tensor = img_resized.transpose((2, 0, 1))
-    img_resized_tensor = np.ascontiguousarray(img_resized_tensor, dtype=np.float32)
+    #img_resized_tensor = np.ascontiguousarray(img_resized_tensor, dtype=np.float32)
     print(f"Image resized shape: {img_resized_tensor.shape}")
 
     #i=150
@@ -60,13 +60,13 @@ def main():
     # convert the input image to a tensor
     #input_tensor = img_resized.reshape(image_shape)
     #print(f"Input tensor shape: {input_tensor.shape}")
-    input_tensor = torch.from_numpy(img_resized_tensor)
-    input_tensor = input_tensor[None]
-    input_tensor = input_tensor.to('cpu')
-    image_np = np.asarray(input_tensor.cpu())
+    #input_tensor = torch.from_numpy(img_resized_tensor)
+    img_resized_tensor = img_resized_tensor[None]
+    #input_tensor = input_tensor.to('cpu')
+    #image_np = np.asarray(input_tensor.cpu())
     # run the inference
     start = time.time()
-    output_tensors = sess.run(None, {sess.get_inputs()[0].name: image_np})
+    output_tensors = sess.run(None, {sess.get_inputs()[0].name: img_resized_tensor.astype(np.float32)})
     end = time.time()
 
     # print the inference time
