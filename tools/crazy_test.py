@@ -15,9 +15,9 @@ def parse_args():
 def main():
     # parse arguments
     args = parse_args()
-
+    print(rt.get_available_providers())
     # create the session
-    sess = rt.InferenceSession(args.model_path)
+    sess = rt.InferenceSession(args.model_path, providers=['CUDAExecutionProvider', 'CPUExecutionProvider'])
 
     # print the input and output node counts
     num_input_nodes = len(sess.get_inputs())
@@ -42,6 +42,7 @@ def main():
     if img is None:
         print(f"Could not read the image: {args.img_path}")
         return
+    start = time.time()
     img = cv2.cvtColor(img, cv2.COLOR_BGR2RGB)
 
     # preprocess the input image
@@ -65,12 +66,8 @@ def main():
     #input_tensor = input_tensor.to('cpu')
     #image_np = np.asarray(input_tensor.cpu())
     # run the inference
-    start = time.time()
-    output_tensors = sess.run(None, {sess.get_inputs()[0].name: img_resized_tensor.astype(np.float32)})
-    end = time.time()
 
-    # print the inference time
-    print(f"Inference time: {end - start} ms")
+    output_tensors = sess.run(None, {sess.get_inputs()[0].name: img_resized_tensor.astype(np.float32)})
 
     # extract the probability tensor
     prob_tensor_values = output_tensors[0]
@@ -93,8 +90,13 @@ def main():
         cv2.rectangle(img_resized, (int(bbox.x), int(bbox.y)), (int(bbox.x + bbox.w), int(bbox.y + bbox.h)), (0, 255, 0), 2)
         #cv2.putText(img, str(bbox.class_id), (bbox.x, bbox.y), cv2.FONT_HERSHEY_SIMPLEX, 1, (0, 255, 0), 2)
 
+    end = time.time()
+
+    # print the inference time
+    print(f"Inference time: {(end - start)*1000} ms")
+    print(rt.get_device())
+
     # save the output image
-    
     ok = cv2.imwrite("output2.jpg", img_resized)
     print(f"Output image saved as output.jpg ({ok})")
 
